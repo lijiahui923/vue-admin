@@ -2,7 +2,7 @@
 const path = require("path");
 module.exports = {
   //基本路径
-  publicPath: "./",
+  publicPath: "/",
   // publicPath: process.env.NODE_ENV === 'production' ? '' : '/',
   // 输出文件目录
   outputDir: process.env.NODE_ENV === "production" ? "dist" : "devdist",
@@ -23,6 +23,7 @@ module.exports = {
       alias: {
         "@": path.resolve(__dirname, "./src"),
         components: path.resolve(__dirname, "./src/components"),
+        utils: path.resolve(__dirname, "./src/utils"),
         common: path.resolve(__dirname, "./src/common"),
         api: path.resolve(__dirname, "./src/api"),
         router: path.resolve(__dirname, "./src/router"),
@@ -64,6 +65,10 @@ module.exports = {
     https: false, // 编译失败时刷新页面
     hot: true, // 开启热加载
     hotOnly: false,
+    overlay: {
+      warnings: false,
+      errors: false
+    },
     proxy: {
       // 设置代理
       "/devapi": {
@@ -73,11 +78,6 @@ module.exports = {
           "^/devapi": ""
         }
       }
-    },
-    // 全屏模式下是否显示脚本错误
-    overlay: {
-      warnings: true,
-      errors: true
     },
     before: app => {}
   },

@@ -43,12 +43,14 @@
 @createTime:2020-05-13
 @create:lijiahui
 */
-import { reactive, ref, onMounted } from '@vue/composition-api';
 import { stripscript, validateEmail, validatePassword, validateCode } from 'utils/validate';
 export default {
   name: 'Login',
-  setup (props, context) {
+  props: {},
+  components: {},
+  data() {
     let checkusername = (rule, value, callback) => {
+      // this.ruleForm.username = stripscript(value);
       if (value === '') {
         callback(new Error('请输入邮箱'));
       } else if (!validateEmail(value)) {
@@ -58,7 +60,7 @@ export default {
       }
     };
     let checkpassword = (rule, value, callback) => {
-      ruleForm.password = stripscript(value);
+      this.ruleForm.password = stripscript(value);
       if (value === '') {
         callback(new Error('请输入密码'));
       } else {
@@ -69,11 +71,11 @@ export default {
       }
     };
     let checkpasswords = (rule, value, callback) => {
-      ruleForm.passwords = stripscript(value);
+      this.ruleForm.passwords = stripscript(value);
       if (value === '') {
         callback(new Error('请输入确认密码'));
       } else {
-        if (value !== ruleForm.password) {
+        if (value !== this.ruleForm.password) {
           callback(new Error('两次密码不一致!'));
         }
         callback();
@@ -88,40 +90,42 @@ export default {
         callback();
       }
     };
-    const model = ref('login');
-    const menuTab = reactive([
+    return {
+      model: 'login',
+      menuTab: [
         { id: 1, text: '登录', current: true, type: 'login' },
         { id: 2, text: '注册', current: false, type: 'register' }
-      ]);
-    const rules = reactive({
-        username: [{ validator: checkusername, trigger: 'blur' }],
-        password: [{ validator: checkpassword, trigger: 'blur' }],
-        passwords: [{ validator: checkpasswords, trigger: 'blur' }],
-        code: [{ validator: checkcode, trigger: 'blur' }]
-      });
-      const ruleForm = reactive({
+      ],
+      ruleForm: {
         username: '',
         password: '',
         passwords: '',
         code: ''
-      });
-    /**
-     * 生命周期
-     */
-    // 挂载完成后
-    onMounted(() => {});
-    /**
-     * 声明函数
-     */
-    const toggleMenu = (data => {
-      menuTab.forEach(elem => {
+      },
+      rules: {
+        username: [{ validator: checkusername, trigger: 'blur' }],
+        password: [{ validator: checkpassword, trigger: 'blur' }],
+        passwords: [{ validator: checkpasswords, trigger: 'blur' }],
+        code: [{ validator: checkcode, trigger: 'blur' }]
+      }
+    };
+  },
+  computed: {},
+  watch: {},
+  mounted() {},
+  created() {},
+  methods: {
+    // 设置高光
+    toggleMenu (data) {
+      this.menuTab.forEach(elem => {
         elem.current = false;
       });
       data.current = true;
-      model.value = data.type;
-    });
-    const submitForm = ( formName => {
-      context.refs[formName].validate((valid) => {
+      this.model = data.type;
+      this.$refs.ruleForm.resetFields();
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           alert('submit!');
         } else {
@@ -129,20 +133,8 @@ export default {
           return false;
         }
       });
-    });
-    return {
-      menuTab,
-      model,
-      rules,
-      ruleForm,
-      toggleMenu,
-      submitForm
     }
-  },
-  props: {},
-  components: {},
-  computed: {},
-  watch: {}
+  }
 };
 </script>
 <style scoped lang="scss">
