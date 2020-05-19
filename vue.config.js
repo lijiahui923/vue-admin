@@ -2,8 +2,8 @@
 const path = require("path");
 module.exports = {
   //基本路径
-  publicPath: "/",
-  // publicPath: process.env.NODE_ENV === 'production' ? '' : '/',
+  // publicPath: "/",
+  publicPath: process.env.NODE_ENV === 'production' ? '' : '/',
   // 输出文件目录
   outputDir: process.env.NODE_ENV === "production" ? "dist" : "devdist",
   lintOnSave: false, // 是否开启eslint保存检测，有效值：ture | false | 'error'

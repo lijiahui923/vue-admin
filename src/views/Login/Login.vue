@@ -25,7 +25,7 @@
               <el-input v-model.number="ruleForm.code" minlength="6" maxlength="6" clearable></el-input>
             </el-col>
             <el-col :span="9">
-              <el-button type="success" class="block">获取验证码</el-button>
+              <el-button type="success" class="block" @click="getSms">获取验证码</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -43,11 +43,12 @@
 @createTime:2020-05-13
 @create:lijiahui
 */
+import { GetSms } from 'api/login/login';
 import { reactive, ref, onMounted } from '@vue/composition-api';
 import { stripscript, validateEmail, validatePassword, validateCode } from 'utils/validate';
 export default {
   name: 'Login',
-  setup (props, context) {
+  setup (props, { refs }) {
     let checkusername = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入邮箱'));
@@ -121,22 +122,29 @@ export default {
       model.value = data.type;
     });
     const submitForm = ( formName => {
-      context.refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
+      refs[formName].validate((valid) => {
+        console.log(valid);
+        // if (valid) {
+        //   alert('submit!');
+        // } else {
+        //   console.log("error submit!!");
+        //   return false;
+        // }
       });
     });
+    const getSms = ( () => {
+      GetSms();
+    });
     return {
+      // 属性
       menuTab,
       model,
       rules,
       ruleForm,
+      //方法
       toggleMenu,
-      submitForm
+      submitForm,
+      getSms
     }
   },
   props: {},
