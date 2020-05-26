@@ -21,16 +21,16 @@
         <el-form-item prop="code" class="item-form">
           <label>验证码</label>
           <el-row :gutter="10">
-            <el-col :span="15">
-              <el-input v-model.number="ruleForm.code" minlength="6" maxlength="6" clearable></el-input>
+            <el-col :span="14">
+              <el-input v-model="ruleForm.code" minlength="6" maxlength="6" clearable></el-input>
             </el-col>
-            <el-col :span="9">
-              <el-button type="success" class="block" @click="getSms">获取验证码</el-button>
+            <el-col :span="10">
+              <el-button type="success" class="block" @click="getSms" :disabled="codeDisabled">{{codeText.text}}</el-button>
             </el-col>
           </el-row>
         </el-form-item>
         <el-form-item>
-          <el-button type="danger" @click="submitForm('ruleForm')" class="login-btn block">提交</el-button>
+          <el-button type="danger" @click="submitForm('ruleForm')" class="login-btn block" :disabled="submitDisabled">{{model === "login" ? "登录" : "注册"}}</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -43,12 +43,12 @@
 @createTime:2020-05-13
 @create:lijiahui
 */
-import { GetSms } from 'api/login/login';
+import { GetSms, Register, Login } from 'api/login/login';
 import { reactive, ref, onMounted } from '@vue/composition-api';
 import { stripscript, validateEmail, validatePassword, validateCode } from 'utils/validate';
 export default {
   name: 'Login',
-  setup (props, { refs }) {
+  setup (props, { refs, root }) {
     let checkusername = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入邮箱'));
@@ -90,6 +90,13 @@ export default {
       }
     };
     const model = ref('login');
+    const submitDisabled = ref(true);
+    const codeDisabled = ref(false);
+    const codeText = reactive({
+      status: false,
+      text: '获取验证码'
+    });
+    const timer = ref(null);
     const menuTab = reactive([
         { id: 1, text: '登录', current: true, type: 'login' },
         { id: 2, text: '注册', current: false, type: 'register' }
@@ -111,40 +118,133 @@ export default {
      */
     // 挂载完成后
     onMounted(() => {});
-    /**
+    /************************************************************************************************************************************************************************
      * 声明函数
      */
+    // 切换tab
     const toggleMenu = (data => {
       menuTab.forEach(elem => {
         elem.current = false;
       });
       data.current = true;
       model.value = data.type;
+      // 清空表单
+      refs.ruleForm.resetFields();
+      // 重置状态
+      clearCountDown();
     });
+    // 登录注册
     const submitForm = ( formName => {
       refs[formName].validate((valid) => {
-        console.log(valid);
-        // if (valid) {
-        //   alert('submit!');
-        // } else {
-        //   console.log("error submit!!");
-        //   return false;
-        // }
+        if (valid) {
+          if (model.value === 'register') {
+            let registerData ={
+              username: ruleForm.username,
+              password: ruleForm.password,
+              code: ruleForm.code,
+              module: model.value
+            };
+            Register(registerData).then(response => {
+              root.$message({
+                message: response.data.message,
+                type: 'success'
+              });
+              toggleMenu(menuTab[0]);
+              clearCountDown();
+            }).catch(error => {
+              console.log(error);
+            });
+          } else {
+            let loginData ={
+              username: ruleForm.username,
+              password: ruleForm.password,
+              code: ruleForm.code
+            };
+            Login(loginData).then(response => {
+              root.$message({
+                message: response.data.message,
+                type: 'success'
+              });
+            }).catch(error => {
+              console.log(error);
+            });
+          }
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
       });
     });
+    // 获取验证码
     const getSms = ( () => {
-      GetSms();
+      if (ruleForm.username === '') {
+        root.$message({
+          message: '邮箱不能为空',
+          type: 'warning'
+        });
+        return false;
+      } 
+      let requestData = {
+        username: ruleForm.username,
+        module: model.value
+      };
+      codeDisabled.value = true;
+      codeText.text = `发送中`;
+      countDown(10);
+      setTimeout(() => {
+        GetSms(requestData).then( response => {
+          if (response.data.resCode === 0) {
+            submitDisabled.value = false;
+            console.log(response.data.message);
+            root.$message({
+              message: response.data.message,
+              type: 'success'
+            });
+          }
+        }).catch( error => {
+          console.log(error);
+        });
+      },5000);
+    });
+    // 倒计时
+    const countDown = ((number) => {
+      // 判断定时器是否存在，存在就清除
+      if (timer.value) { clearInterval(timer.value); }
+      let time = ref(number);
+      timer.value = setInterval(() => {
+        if (time.value === 0) {
+          clearInterval(timer.value);
+          codeText.text = `重新获取验证码`;
+          codeDisabled.value = false;
+        } else {
+          codeText.text = `倒计时${time.value}秒`;
+          time.value --;
+        }
+      },1000);
+    });
+    // 清除倒计时
+    const clearCountDown = ( () => {
+      // 重置状态
+      codeText.status = false;
+      codeText.text = '获取验证码';
+      clearInterval(timer.value);
     });
     return {
-      // 属性
+      // 属性1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
       menuTab,
       model,
       rules,
       ruleForm,
-      //方法
+      submitDisabled,
+      codeDisabled,
+      codeText,
+      timer,
+      //方法11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
       toggleMenu,
       submitForm,
-      getSms
+      getSms,
+      countDown,
+      clearCountDown
     }
   },
   props: {},
