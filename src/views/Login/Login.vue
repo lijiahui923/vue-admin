@@ -25,7 +25,7 @@
               <el-input v-model="ruleForm.code" minlength="6" maxlength="6" clearable></el-input>
             </el-col>
             <el-col :span="10">
-              <el-button type="success" class="block" @click="getSms" :disabled="codeDisabled">{{codeText.text}}</el-button>
+              <el-button type="success" class="block" @click="getSms" :disabled="codeText.status">{{codeText.text}}</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -43,6 +43,8 @@
 @createTime:2020-05-13
 @create:lijiahui
 */
+// 加密不可逆
+import sha1 from 'js-sha1';
 import { GetSms, Register, Login } from 'api/login/login';
 import { reactive, ref, onMounted } from '@vue/composition-api';
 import { stripscript, validateEmail, validatePassword, validateCode } from 'utils/validate';
@@ -91,7 +93,6 @@ export default {
     };
     const model = ref('login');
     const submitDisabled = ref(true);
-    const codeDisabled = ref(false);
     const codeText = reactive({
       status: false,
       text: '获取验证码'
@@ -137,42 +138,46 @@ export default {
     const submitForm = ( formName => {
       refs[formName].validate((valid) => {
         if (valid) {
-          if (model.value === 'register') {
-            let registerData ={
-              username: ruleForm.username,
-              password: ruleForm.password,
-              code: ruleForm.code,
-              module: model.value
-            };
-            Register(registerData).then(response => {
-              root.$message({
-                message: response.data.message,
-                type: 'success'
-              });
-              toggleMenu(menuTab[0]);
-              clearCountDown();
-            }).catch(error => {
-              console.log(error);
-            });
-          } else {
-            let loginData ={
-              username: ruleForm.username,
-              password: ruleForm.password,
-              code: ruleForm.code
-            };
-            Login(loginData).then(response => {
-              root.$message({
-                message: response.data.message,
-                type: 'success'
-              });
-            }).catch(error => {
-              console.log(error);
-            });
-          }
+          model.value === 'login'? login() : register();
         } else {
           console.log("error submit!!");
           return false;
         }
+      });
+    });
+    // 注册
+    const register = ( () => {
+      let registerData ={
+        username: ruleForm.username,
+        password: sha1(ruleForm.password),
+        code: ruleForm.code,
+        module: model.value
+      };
+      Register(registerData).then(response => {
+        root.$message({
+          message: response.data.message,
+          type: 'success'
+        });
+        toggleMenu(menuTab[0]);
+        clearCountDown();
+      }).catch(error => {
+        console.log(error);
+      });
+    });
+    // 登录
+    const login = ( () => {
+      let loginData ={
+        username: ruleForm.username,
+        password: sha1(ruleForm.password),
+        code: ruleForm.code
+      };
+      Login(loginData).then(response => {
+        root.$message({
+          message: response.data.message,
+          type: 'success'
+        });
+      }).catch(error => {
+        console.log(error);
       });
     });
     // 获取验证码
@@ -188,8 +193,10 @@ export default {
         username: ruleForm.username,
         module: model.value
       };
-      codeDisabled.value = true;
-      codeText.text = `发送中`;
+      updateBtnStatus({
+        status: true,
+        text: '发送中'
+      });
       countDown(10);
       setTimeout(() => {
         GetSms(requestData).then( response => {
@@ -214,8 +221,10 @@ export default {
       timer.value = setInterval(() => {
         if (time.value === 0) {
           clearInterval(timer.value);
-          codeText.text = `重新获取验证码`;
-          codeDisabled.value = false;
+          updateBtnStatus({
+            status: false,
+            text: '重新获取验证码'
+          });
         } else {
           codeText.text = `倒计时${time.value}秒`;
           time.value --;
@@ -225,9 +234,16 @@ export default {
     // 清除倒计时
     const clearCountDown = ( () => {
       // 重置状态
-      codeText.status = false;
-      codeText.text = '获取验证码';
+      updateBtnStatus({
+        status: false,
+        text: '获取验证码'
+      });
       clearInterval(timer.value);
+    });
+    // 更新按钮状态
+    const updateBtnStatus = ((params) => {
+      codeText.status = params.status;
+      codeText.text = params.text;
     });
     return {
       // 属性1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
@@ -236,15 +252,17 @@ export default {
       rules,
       ruleForm,
       submitDisabled,
-      codeDisabled,
       codeText,
       timer,
       //方法11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
       toggleMenu,
       submitForm,
       getSms,
+      register,
+      login,
       countDown,
-      clearCountDown
+      clearCountDown,
+      updateBtnStatus
     }
   },
   props: {},
@@ -295,3 +313,7 @@ export default {
   }
 }
 </style>
+<!--
+1、尽量方法里面只做一件事，不要混杂很多其他的逻辑
+2、很多公用的地方提取出来
+-->
