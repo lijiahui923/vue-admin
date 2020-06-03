@@ -176,6 +176,7 @@ export default {
           message: response.data.message,
           type: 'success'
         });
+        root.$router.push({name:'Main'});
       }).catch(error => {
         console.log(error);
       });

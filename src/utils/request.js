@@ -15,7 +15,6 @@ const instance = axios.create({
 instance.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
     // 后台需要前端这边传什么相关的参数（在请求头添加参数）
-    console.log(config.headers);
     config.headers.toKey = '11111111111111';
     return config;
 }, function (error) {

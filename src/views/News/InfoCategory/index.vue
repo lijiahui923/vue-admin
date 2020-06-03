@@ -9,7 +9,7 @@
 @create:lijiahui
 */
 export default {
-  name: 'User',
+  name: 'InfoCategory',
   props: {},
   components: {},
   data() {

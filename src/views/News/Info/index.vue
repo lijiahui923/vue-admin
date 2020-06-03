@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>新闻列表</div>
 </template>
 
 <script>
@@ -9,7 +9,7 @@
 @create:lijiahui
 */
 export default {
-  name: 'User',
+  name: 'Info',
   props: {},
   components: {},
   data() {

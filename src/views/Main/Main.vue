@@ -1,15 +1,15 @@
 <template>
-  <div></div>
+  <div>首页sss</div>
 </template>
 
 <script>
 /**
-@description:
-@createTime:2020-06-01
+@description:首页
+@createTime:2020-05-26
 @create:lijiahui
 */
 export default {
-  name: 'User',
+  name: 'Main',
   props: {},
   components: {},
   data() {
@@ -22,4 +22,6 @@ export default {
   methods: {}
 };
 </script>
-<style scoped></style>
+<style scoped lang="sass">
+
+</style>

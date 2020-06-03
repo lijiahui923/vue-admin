@@ -29,6 +29,7 @@ module.exports = {
         router: path.resolve(__dirname, "./src/router"),
         views: path.resolve(__dirname, "./src/views"),
         data: path.resolve(__dirname, "./src/data"),
+        styles: path.resolve(__dirname, "./src/styles"),
         public: path.resolve(__dirname, "public")
       }
     };

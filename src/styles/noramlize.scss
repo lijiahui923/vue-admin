@@ -32,6 +32,9 @@
  footer, header, hgroup, menu, nav, section {
    display: block;
  }
+ html,body {
+  height: 100%;
+ }
  html {
     line-height: 1.15; /* 1 */
     -webkit-text-size-adjust: 100%; /* 2 */
