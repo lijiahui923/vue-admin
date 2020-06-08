@@ -1,15 +1,19 @@
 <template>
-  <div>dsdsds</div>
+  <div>
+      <svg :class="svgClass" aria-hidden="true">
+          <use :xlink:href="name"></use>
+      </svg>
+  </div>
 </template>
 
 <script>
 /**
-@description:
-@createTime:2020-06-01
+@description:sda
+@createTime:2020-06-08
 @create:lijiahui
 */
 export default {
-  name: 'InfoCategory',
+  name: 'SvgIcon',
   props: {},
   components: {},
   data() {

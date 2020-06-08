@@ -9,7 +9,8 @@ const routes = [
     redirect: "login",
     hidden: true,
     meta: {
-      name: "主页"
+      name: "主页",
+      icon: 'el-icon-s-platform'
     }
   },
   {
@@ -17,7 +18,8 @@ const routes = [
     name: "Login",
     hidden: true,
     meta: {
-      name: "登录"
+      name: "登录",
+      icon: 'el-icon-s-grid'
     },
     component: () => import("views/Login/Login.vue")
   },
@@ -27,7 +29,8 @@ const routes = [
     hidden: false,
     redirect: "index",
     meta: {
-      name: "控制台"
+      name: "控制台",
+      icon: 'el-icon-menu'
     },
     component: () => import("views/Layout/Layout.vue"),
     // 默认显示第一个名字要一致
@@ -36,7 +39,8 @@ const routes = [
         path: "/index",
         name: "Index",
         meta: {
-          name: "首页"
+          name: "首页",
+          icon: 'el-icon-menu'
         },
         component: () => import("views/Main/Main.vue")
       }
@@ -47,7 +51,8 @@ const routes = [
     name: "Info",
     hidden: false,
     meta: {
-      name: "信息管理"
+      name: "信息管理",
+      icon: 'el-icon-menu'
     },
     component: () => import("views/Layout/Layout.vue"),
     children: [
@@ -55,7 +60,8 @@ const routes = [
         path: "/infoIndex",
         name: "InfoIndex",
         meta: {
-          name: "信息列表"
+          name: "信息列表",
+          icon: 'el-icon-menu'
         },
         component: () => import("views/News/Info/index.vue")
       },
@@ -63,7 +69,8 @@ const routes = [
         path: "/infoCategory",
         name: "InfoCategory",
         meta: {
-          name: "信息分类"
+          name: "信息分类",
+          icon: 'el-icon-menu'
         },
         component: () => import("views/News/InfoCategory/index.vue")
       }
@@ -74,7 +81,8 @@ const routes = [
     name: "User",
     hidden: false,
     meta: {
-      name: "用户管理"
+      name: "用户管理",
+      icon: 'el-icon-menu'
     },
     component: () => import("views/User/User.vue"),
     children: [
@@ -82,7 +90,8 @@ const routes = [
         path: "/userIndex",
         name: "UserIndex",
         meta: {
-          name: "信息列表"
+          name: "信息列表",
+          icon: 'el-icon-menu'
         },
         component: () => import("views/User/User.vue")
       }

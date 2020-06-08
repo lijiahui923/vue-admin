@@ -1,3 +1,16 @@
-.el-submenu .is-active{
-    background-color: #f56c6c;
+.el-submenu .el-menu-item {
+    color: #fff;
+    font-size: 12px;
+    padding-left: 49px !important;
+    &.is-active {
+        background-color: rgba(245,108,108,0.2) !important;
+        // border-left: 3px yellow solid;
+    }
 }
+// 修改一级菜单样式
+li.el-submenu {
+    &.is-active.is-opened .el-submenu__title {
+        background: #f56c6d !important;
+        border-left: 3px yellow solid;
+    }
+} 

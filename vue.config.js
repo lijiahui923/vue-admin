@@ -21,6 +21,8 @@ module.exports = {
       // 配置解析别名
       extensions: [".js", ".json", ".vue"],
       alias: {
+        // 把vue的指向这个地址
+        'vue': 'vue/dist/vue.js',
         "@": path.resolve(__dirname, "./src"),
         components: path.resolve(__dirname, "./src/components"),
         utils: path.resolve(__dirname, "./src/utils"),

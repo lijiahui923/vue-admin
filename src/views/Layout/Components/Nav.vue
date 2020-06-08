@@ -12,16 +12,21 @@
            2、不建议v-for和v-if在一起使用（就是不要写在同一个标签上）
        -->
       <template v-for="(item, index) in routers">
-        <el-submenu v-if="!item.hidden" :key="item.id" :index="index">
+        <el-submenu v-if="!item.hidden" :key="item.id" :index="index + ''">
           <!-- 一级菜单 -->
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i :class="item.meta.icon"></i>
             <span slot="title">{{item.meta.name}}</span>
           </template>
           <!-- 子菜单 -->
-            <el-menu-item v-for="subItem in item.children" :key="subItem.id" :index="subItem.path">{{subItem.meta.name}}</el-menu-item>
+            <el-menu-item v-for="subItem in item.children" :key="subItem.id" :index="subItem.path">
+              <i :class="subItem.meta.icon"></i>
+              {{subItem.meta.name}}
+            </el-menu-item>
         </el-submenu>
       </template>
+      <svg-icon />
+      <test-icon></test-icon>
     </el-menu>
   </div>
 </template>
@@ -54,7 +59,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import 'styles/config.scss';
 #nav-wrap {
     position: fixed;
     top: 0;

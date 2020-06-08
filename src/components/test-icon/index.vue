@@ -1,15 +1,15 @@
 <template>
-  <div>dsdsds</div>
+  <div>aadddddd</div>
 </template>
 
 <script>
 /**
-@description:
-@createTime:2020-06-01
+@description:d
+@createTime:2020-06-05
 @create:lijiahui
 */
 export default {
-  name: 'InfoCategory',
+  name: 'test-icon',
   props: {},
   components: {},
   data() {
