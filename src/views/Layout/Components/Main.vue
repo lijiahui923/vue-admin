@@ -1,6 +1,11 @@
 <template>
   <div id="main-wrap">
+    <div class="main-content">
+      <div class="content">
         <router-view />
+      </div>
+    </div>
+    <!-- <router-view /> -->
   </div>
 </template>
 
@@ -26,12 +31,31 @@ export default {
 </script>
 <style lang="scss" scoped>
 #main-wrap {
-    position: fixed;
-    left: $navMenu;
-    top: 47px;
-    right: 0;
-    bottom: 0;
-    border: 30px solid #f7f7f7;
-    box-sizing: border-box;
+    height: 100vh;
+    // position: fixed;
+    // left: $navMenu;
+    // top: 47px;
+    // right: 0;
+    // bottom: 0;
+    // border: 15px solid #f7f7f7;
+    // box-sizing: border-box;
+}
+.main-content {
+  width: 100%;
+  height: 100%;
+  padding-top: $layoutHeader + 15px;
+  padding-left: $navMenu + 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.content {
+  width: 100%;
+  height: 100%;
+  padding: 30px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: #fff;
 }
 </style>

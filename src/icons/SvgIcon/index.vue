@@ -9,11 +9,11 @@ export default {
   props: {
     iconClass: {
       type: String,
-      required: true
+      default: ''
     },
     className: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   computed: {
