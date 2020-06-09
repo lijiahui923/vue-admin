@@ -25,8 +25,7 @@
             </el-menu-item>
         </el-submenu>
       </template>
-      <svg-icon />
-      <test-icon></test-icon>
+      <svg-icon icon-class="console" class-name="console-style"></svg-icon>
     </el-menu>
   </div>
 </template>

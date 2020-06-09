@@ -5,26 +5,26 @@ import router from "./router";
 import store from "./store";
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import commComponent from '../src/components';
+// import commComponent from '../src/components';
 // import uploader from 'vue-simple-uploader';
 // Vue.use(uploader);
 
 // 自定义全局组件
-// import './components/icons';
+import '@/icons/index.js';
 
-const { LJHcompent } = commComponent;
+// const { LJHcompent } = commComponent;
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 // vue3.0
 Vue.use(VueCompositionApi);
-Vue.use(commComponent);
+// Vue.use(commComponent);
 
 // runtime(运行模式)
 new Vue({
   router,
   store,
   render: h => h(App, {
-    view: {...LJHcompent}
+    // view: {...LJHcompent}
   })
 }).$mount("#app");
 

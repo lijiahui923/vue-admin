@@ -10,11 +10,25 @@ module.exports = {
   /**
    * webpack配置,see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
    **/
+  // 一个函数，会接收一个基于 webpack-chain 的 ChainableConfig 实例
+  // 允许对内部的 webpack 配置进行更细粒度的修改
   chainWebpack: config => {
-    // 修复HMR
-    //config.resolve.symlinks(true)
-    //const types = ['vue-modules', 'vue', 'normal-modules', 'normal']
-    //types.forEach(type => addStyleResource(config.module.rule('stylus').oneOf(type)))
+    // 配置svg默认规则排除icons目录中svg文件处理
+    config.module
+      .rule("svg")
+      .exclude.add(path.resolve("src/icons"))
+      .end();
+
+    // 新增icons规则，设置svg-sprite-loader处理icons目录中svg文件
+    config.module
+      .rule("icons")
+      .test(/\.svg$/)
+      .include.add(path.resolve("src/icons"))
+      .end()
+      .use("svg-sprite-loader")
+      .loader("svg-sprite-loader")
+      .options({ symbolId: "icon-[name]" })
+      .end();
   },
   configureWebpack: config => {
     config.resolve = {
@@ -26,13 +40,9 @@ module.exports = {
         "@": path.resolve(__dirname, "./src"),
         components: path.resolve(__dirname, "./src/components"),
         utils: path.resolve(__dirname, "./src/utils"),
-        common: path.resolve(__dirname, "./src/common"),
         api: path.resolve(__dirname, "./src/api"),
         router: path.resolve(__dirname, "./src/router"),
-        views: path.resolve(__dirname, "./src/views"),
-        data: path.resolve(__dirname, "./src/data"),
-        styles: path.resolve(__dirname, "./src/styles"),
-        public: path.resolve(__dirname, "public")
+        views: path.resolve(__dirname, "./src/views")
       }
     };
   },
