@@ -50,6 +50,16 @@ export default {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.open {
+  .main-content{
+    padding-left: $navMenu + 15px;
+  }
+}
+.close {
+  .main-content{
+    padding-left: $navMenuMin + 15px;
+  }
+}
 .content {
   width: 100%;
   height: 100%;

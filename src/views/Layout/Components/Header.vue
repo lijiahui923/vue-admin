@@ -1,6 +1,6 @@
 <template>
   <div id="header-wrap">
-    <div class="pull-left header-icon"><svg-icon icon-class="menu" class-name="menu-style"></svg-icon></div>
+    <div class="pull-left header-icon" @click="navMenuSate"><svg-icon icon-class="menu" class-name="menu-style"></svg-icon></div>
     <div class="pull-right">
       <div class="user-info pull-left">
           <img src="@/assets/images/headphoto.png" alt="">
@@ -23,14 +23,14 @@ export default {
   name: 'Header',
   props: {},
   components: {},
-  data() {
-    return {};
-  },
-  computed: {},
-  watch: {},
-  mounted() {},
-  created() {},
-  methods: {}
+  setup (props, { root }) {
+    const navMenuSate = () => {
+      root.$store.commit('set_isCollapse');
+    }
+    return {
+      navMenuSate
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -41,8 +41,19 @@ export default {
     left: $navMenu;
     height: 47px;
     background-color: #fff;
-    box-shadow: 0 3px 16px 0 rgba(0,0,0,0.1);
+    @include webkit(box-shadow, 0 3px 16px 0 rgba(0,0,0,0.1));
+    @include webkit(transition, all .3s ease 0s);
     line-height: 47px;
+}
+.open {
+  #header-wrap{
+    left: $navMenu;
+  }
+}
+.close {
+  #header-wrap{
+    left: $navMenuMin;
+  }
 }
 .header-icon {
   padding: 0 32px;

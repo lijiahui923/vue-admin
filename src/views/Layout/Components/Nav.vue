@@ -4,8 +4,6 @@
     class="el-menu-vertical-demo"
     background-color="transparent"
     text-color="#fff"
-    @open="handleOpen"
-    @close="handleClose"
     :collapse="isCollapse"
     router>
       <!-- 1、小知识就是用template标签的时候key不要写在上面会报错因为template不是一个真正的标签
@@ -25,7 +23,6 @@
             </el-menu-item>
         </el-submenu>
       </template>
-      <svg-icon icon-class="console" class-name="console-style"></svg-icon>
     </el-menu>
   </div>
 </template>
@@ -36,23 +33,22 @@
 @createTime:2020-05-26
 @create:lijiahui
 */
-import { ref, reactive } from '@vue/composition-api';
+import { reactive, computed } from '@vue/composition-api';
 export default {
   name: 'Nav',
   props: {},
   setup (props, {root}) {
-    const isCollapse = ref(false);
     const routers = reactive(root.$router.options.routes);
-    // 方法*****************************************************************************************************************************
-    const handleOpen = (key, keyPath) => {console.log(key,keyPath);};
-    const handleClose = (key, keyPath) => {console.log(key,keyPath);};
+    /**
+     * computed
+     */
+    const isCollapse = computed ( () => {
+      return root.$store.state.isCollapse;
+    });
     return {
       // 属性
       isCollapse,
-      routers,
-      // 方法
-      handleOpen,
-      handleClose
+      routers
     }
   }
 };
@@ -62,12 +58,22 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    width: $navMenu;
     height: 100vh;
     background-color: #344a5f;
+    @include webkit(transition, all .3s ease 0s);
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: $navMenu;
   height: 100vh;
+}
+.open {
+  #nav-wrap {
+    width: $navMenu;
+  }
+}
+.close {
+  #nav-wrap {
+    width: $navMenuMin;
+  }
 }
 </style>
