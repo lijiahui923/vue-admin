@@ -1,6 +1,7 @@
 <template>
   <div>
     <div id="global-uploader">
+        我是首页
         <!-- <input type="file" name="uploadFile" id="uploadFile" @change="changeUploadFile" mo> -->
         <!-- <el-button @click="changeUploadFile">上传</el-button> -->
         <!-- 上传 -->

@@ -1,16 +1,26 @@
 .el-submenu .el-menu-item {
-    color: #fff;
-    font-size: 12px;
-    padding-left: 49px !important;
-    &.is-active {
-        background-color: rgba(245,108,108,0.2) !important;
-        // border-left: 3px yellow solid;
-    }
+    font-size: 14px;
+    padding-left: 50px !important;
+    &.is-active { background-color: rgba(245, 108, 108, 0.2) !important; }
 }
 // 修改一级菜单样式
-li.el-submenu {
-    &.is-active.is-opened .el-submenu__title {
-        background: #f56c6d !important;
-        border-left: 3px yellow solid;
+.el-submenu.is-active .el-submenu__title {
+    background-color: deeppink !important;
+}
+
+.close {
+    .el-submenu {
+        &.is-opened {
+            > .el-submenu__title {
+                background-color: #f56c6d !important;
+            }
+        }
     }
-} 
+}
+.el-menu--vertical {
+    .el-menu { background-color: #f56c6d !important; }
+    .el-menu-item { line-height: 56px; }
+    .el-menu-item:hover {
+        background-color: #f56c6d !important;
+    }
+}
