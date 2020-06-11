@@ -4,9 +4,9 @@
     <div class="pull-right">
       <div class="user-info pull-left">
           <img src="@/assets/images/headphoto.png" alt="">
-        系统管理员
+          {{username}}
       </div>
-      <div class="header-icon pull-left">
+      <div class="header-icon pull-left" @click="exit">
         <svg-icon icon-class="close" class-name="close-style"></svg-icon>
       </div>
     </div>
@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import { computed } from '@vue/composition-api';
+import { removeToken, removeUsername } from "utils/app";
 /**
 @description:头部
 @createTime:2020-05-26
@@ -24,11 +26,22 @@ export default {
   props: {},
   components: {},
   setup (props, { root }) {
+    const username = computed ( () => {
+      return root.$store.state.username;
+    });
     const navMenuSate = () => {
       root.$store.commit('set_isCollapse');
     }
+    const exit = () => {
+      console.log(1);
+      removeToken('token');
+      removeUsername('username');
+      root.$router.push({name:'Login'});
+    }
     return {
-      navMenuSate
+      username,
+      navMenuSate,
+      exit
     }
   }
 };

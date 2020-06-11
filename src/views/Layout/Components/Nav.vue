@@ -23,6 +23,7 @@
             </el-menu-item>
         </el-submenu>
       </template>
+      <!-- <el-button @click="test">sd</el-button> -->
     </el-menu>
   </div>
 </template>
@@ -34,26 +35,34 @@
 @create:lijiahui
 */
 import { reactive, computed } from '@vue/composition-api';
+// import myStore from "@/store/myStore"; // 一个简单的stroe
 export default {
   name: 'Nav',
   props: {},
   setup (props, {root}) {
     const routers = reactive(root.$router.options.routes);
+    // const sharedState = reactive(myStore.state);
+    // console.log(sharedState);
     /**
      * computed
      */
     const isCollapse = computed ( () => {
       return root.$store.state.isCollapse;
     });
+    // const test = ( () => {
+    //   return myStore.setMsgAction('sd')
+    // });
     return {
       // 属性
       isCollapse,
-      routers
+      routers,
+      // test
     }
   }
 };
 </script>
 <style lang="scss" scoped>
+@import '@/styles/config.scss';
 #nav-wrap {
     position: fixed;
     top: 0;

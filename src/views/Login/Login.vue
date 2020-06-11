@@ -45,7 +45,7 @@
 */
 // 加密不可逆
 import sha1 from 'js-sha1';
-import { GetSms, Register, Login } from 'api/login/login';
+import { GetSms, Register } from 'api/login/login';
 import { reactive, ref, onMounted } from '@vue/composition-api';
 import { stripscript, validateEmail, validatePassword, validateCode } from 'utils/validate';
 export default {
@@ -171,7 +171,8 @@ export default {
         password: sha1(ruleForm.password),
         code: ruleForm.code
       };
-      Login(loginData).then(response => {
+      root.$store.dispatch('login',loginData).then(response => {
+        console.log(response);
         root.$message({
           message: response.data.message,
           type: 'success'
